@@ -1,10 +1,11 @@
 package com.miguelzaragozaserrano.characters.data.service
 
 import retrofit2.Retrofit
+import javax.inject.Inject
 
-class CharacterService(retrofit: Retrofit) : CharacterApi {
+class CharactersService @Inject constructor(retrofit: Retrofit) : CharactersApi {
 
-    private val characterApi by lazy { retrofit.create(CharacterApi::class.java) }
+    private val characterApi by lazy { retrofit.create(CharactersApi::class.java) }
 
     override suspend fun getCharacters(limit: Int?, offset: Int?) =
         characterApi.getCharacters(limit, offset)

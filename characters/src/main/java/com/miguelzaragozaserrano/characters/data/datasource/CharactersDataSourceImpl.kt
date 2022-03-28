@@ -1,9 +1,9 @@
 package com.miguelzaragozaserrano.characters.data.datasource
 
-import com.miguelzaragozaserrano.characters.data.local.CharacterLocal
+import com.miguelzaragozaserrano.characters.data.local.CharactersLocal
 import com.miguelzaragozaserrano.characters.data.models.entity.CharactersEntity
 import com.miguelzaragozaserrano.characters.data.models.view.CharactersView
-import com.miguelzaragozaserrano.characters.data.service.CharacterService
+import com.miguelzaragozaserrano.characters.data.service.CharactersService
 import com.miguelzaragozaserrano.core.exception.Failure
 import com.miguelzaragozaserrano.core.extensions.orEmpty
 import com.miguelzaragozaserrano.core.functional.Error
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 class CharactersDataSourceImpl @Inject constructor(
     private val networkHandler: NetworkHandler,
-    private val service: CharacterService,
-    private val local: CharacterLocal,
+    private val service: CharactersService,
+    private val local: CharactersLocal,
 ) : CharactersDataSource {
 
     override fun getCharacters(fromPagination: Boolean) = flow {

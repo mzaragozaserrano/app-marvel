@@ -11,5 +11,5 @@ import com.miguelzaragozaserrano.characters.data.utils.CharacterConverter
 @TypeConverters(CharacterConverter::class)
 abstract class CharactersDatabase : RoomDatabase() {
 
-    abstract fun characterDao(): CharactersDAO
+    abstract fun charactersDao(): CharactersDAO
 }

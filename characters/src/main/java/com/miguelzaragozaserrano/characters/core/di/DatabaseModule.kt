@@ -14,6 +14,6 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideCharactersDAO(database: CharactersDatabase): CharactersDAO = database.characterDao()
+    fun provideCharactersDAO(database: CharactersDatabase): CharactersDAO = database.charactersDao()
 
 }
