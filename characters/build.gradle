@@ -59,11 +59,6 @@ dependencies {
 
     implementation project(':core')
 
-    //Room
-    api 'androidx.room:room-ktx:2.4.2'
-    api 'androidx.room:room-runtime:2.4.2'
-    kapt 'androidx.room:room-compiler:2.4.2'
-
     // Retrofit
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
