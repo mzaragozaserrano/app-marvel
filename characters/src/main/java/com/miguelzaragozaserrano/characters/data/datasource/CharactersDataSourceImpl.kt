@@ -12,8 +12,9 @@ import com.miguelzaragozaserrano.core.functional.Success
 import com.miguelzaragozaserrano.core.utils.NetworkHandler
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class CharactersDataSourceImp(
+class CharactersDataSourceImpl @Inject constructor(
     private val networkHandler: NetworkHandler,
     private val service: CharacterService,
     private val local: CharacterLocal,
