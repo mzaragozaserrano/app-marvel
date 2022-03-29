@@ -1,11 +1,13 @@
 package com.miguelzaragozaserrano.marvel.ui.characters
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
-import com.miguelzaragozaserrano.marvel.ui.base.BaseFragment
+import com.miguelzaragozaserrano.core.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.ui.utils.viewBinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
