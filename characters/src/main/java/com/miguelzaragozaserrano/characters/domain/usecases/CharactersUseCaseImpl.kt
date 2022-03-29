@@ -5,9 +5,14 @@ import com.miguelzaragozaserrano.characters.domain.repository.CharactersReposito
 import com.miguelzaragozaserrano.core.base.BaseUseCase
 import com.miguelzaragozaserrano.core.extensions.orEmpty
 import com.miguelzaragozaserrano.core.functional.State
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class CharactersUseCase(private val repository: CharactersRepository) :
-    BaseUseCase<State<CharactersView>, CharactersUseCase.Params>() {
+typealias CharactersUseCase = BaseUseCase<State<@JvmSuppressWildcards CharactersView>, CharactersUseCaseImpl.Params>
+
+@Singleton
+class CharactersUseCaseImpl @Inject constructor(private val repository: CharactersRepository) :
+    CharactersUseCase() {
 
     override fun run(params: Params?) = repository.getCharacters(params?.fromPagination.orEmpty())
 
