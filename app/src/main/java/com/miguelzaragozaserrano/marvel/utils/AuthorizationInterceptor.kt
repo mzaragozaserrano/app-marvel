@@ -1,9 +1,8 @@
 package com.miguelzaragozaserrano.marvel.utils
 
+import com.miguelzaragozaserrano.core.extensions.md5
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.math.BigInteger
-import java.security.MessageDigest
 import java.util.*
 
 class AuthorizationInterceptor(
@@ -17,7 +16,7 @@ class AuthorizationInterceptor(
         val request = chain.request()
         val requestUrl = request.url
 
-        val ts = (calendar.timeInMillis / 1_000L).toString() // current time in seconds
+        val ts = (calendar.timeInMillis / 1_000L).toString()
         val hash = "$ts$privateKey$publicKey".md5()
         val newUrl = requestUrl.newBuilder()
             .addQueryParameter(QUERY_PARAMETER_TS, ts)
@@ -30,15 +29,6 @@ class AuthorizationInterceptor(
                 .url(newUrl)
                 .build()
         )
-    }
-
-    /**
-     * Convert hash string to MD5
-     */
-    @Suppress("MagicNumber")
-    private fun String.md5(): String {
-        val md = MessageDigest.getInstance("MD5")
-        return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
     }
 
     companion object {
