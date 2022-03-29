@@ -49,10 +49,9 @@ android {
 dependencies {
 
     implementation project(':core')
-    implementation project(':characters')
+    implementation project(':data')
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     //Google
@@ -66,7 +65,7 @@ dependencies {
     //Hilt
     def hilt_version = "2.41"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation project(path: ':characters')
+    implementation project(path: ':data')
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // ViewModel and LiveData
