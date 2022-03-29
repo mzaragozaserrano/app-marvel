@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-internal interface CharactersApi {
+interface CharactersApi {
 
     companion object {
         const val CHARACTERS = "/v1/public/characters"
