@@ -60,15 +60,14 @@ dependencies {
     implementation project(':core')
 
     // Retrofit
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-gson:2.9.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    def retrofit_version = "2.9.0"
+    def interceptor_version = "4.9.3"
+    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    api "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
 
-    //Hilt
-    api 'com.google.dagger:hilt-android:2.41'
-    kapt 'com.google.dagger:hilt-compiler:2.40.5'
-    kapt "com.google.dagger:hilt-android-compiler:2.40"
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.40.5'
+    // Javax Inject
+    implementation "javax.inject:javax.inject:1"
 
     //Test
     testImplementation 'junit:junit:4.13.2'
