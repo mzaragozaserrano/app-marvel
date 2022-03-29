@@ -1,8 +1,6 @@
 package com.miguelzaragozaserrano.marvel.di
 
 import com.miguelzaragozaserrano.characters.BuildConfig
-import com.miguelzaragozaserrano.characters.data.service.CharactersApi
-import com.miguelzaragozaserrano.characters.data.service.CharactersService
 import com.miguelzaragozaserrano.marvel.utils.AuthorizationInterceptor
 import dagger.Module
 import dagger.Provides

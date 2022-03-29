@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -48,10 +49,15 @@ android {
 
 dependencies {
 
-    implementation project(':core')
     implementation project(':data')
+    implementation project(':domain')
+    implementation project(path: ':data')
 
+    //AndroidX
     implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation "androidx.activity:activity-ktx:1.6.0-alpha01"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     //Google
@@ -65,7 +71,6 @@ dependencies {
     //Hilt
     def hilt_version = "2.41"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation project(path: ':data')
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // ViewModel and LiveData

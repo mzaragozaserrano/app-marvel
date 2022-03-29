@@ -1,15 +1,13 @@
 package com.miguelzaragozaserrano.marvel.di
 
-import com.miguelzaragozaserrano.characters.data.datasource.CharactersDataSource
-import com.miguelzaragozaserrano.characters.data.datasource.CharactersDataSourceImpl
-import com.miguelzaragozaserrano.characters.data.repositories.CharactersRepositoryImpl
-import com.miguelzaragozaserrano.characters.data.service.CharactersService
-import com.miguelzaragozaserrano.characters.domain.repository.CharactersRepository
+import com.miguelzaragozaserrano.characters.datasource.CharactersDataSource
+import com.miguelzaragozaserrano.characters.datasource.CharactersDataSourceImpl
+import com.miguelzaragozaserrano.characters.repositories.CharactersRepositoryImpl
+import com.miguelzaragozaserrano.characters.repositories.CharactersRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)

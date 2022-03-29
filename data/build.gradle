@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikeys.properties")
@@ -57,7 +56,20 @@ android {
 
 dependencies {
 
-    implementation project(':core')
+    // Javax Inject
+    api "javax.inject:javax.inject:1"
+
+    //Room
+    def room_version = "2.4.2"
+    api "androidx.room:room-ktx:$room_version"
+    api "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //Coroutines
+    def coroutines_version = "1.6.0"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutines_version"
 
     // Retrofit
     def retrofit_version = "2.9.0"
@@ -65,9 +77,6 @@ dependencies {
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
     api "com.squareup.retrofit2:converter-gson:$retrofit_version"
     api "com.squareup.okhttp3:logging-interceptor:$interceptor_version"
-
-    // Javax Inject
-    implementation "javax.inject:javax.inject:1"
 
     //Test
     testImplementation 'junit:junit:4.13.2'

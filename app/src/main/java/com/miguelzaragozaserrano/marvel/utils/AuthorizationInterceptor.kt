@@ -1,6 +1,6 @@
 package com.miguelzaragozaserrano.marvel.utils
 
-import com.miguelzaragozaserrano.core.extensions.md5
+import com.miguelzaragozaserrano.characters.utils.extensions.md5
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
