@@ -1,12 +1,11 @@
 package com.miguelzaragozaserrano.marvel.utils.extensions
 
-import androidx.lifecycle.LifecycleOwner
 import com.miguelzaragozaserrano.data.utils.Error
 import com.miguelzaragozaserrano.marvel.models.State
 import com.miguelzaragozaserrano.marvel.utils.Status
 import kotlinx.coroutines.flow.StateFlow
 
-suspend fun <T : Any, L : StateFlow<T>> LifecycleOwner.collect(
+suspend fun <T : Any, L : StateFlow<T>> collect(
     flow: L,
     loading: () -> Unit,
     loaded: (Any?) -> Unit,
