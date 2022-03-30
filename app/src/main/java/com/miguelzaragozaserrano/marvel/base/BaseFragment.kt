@@ -34,22 +34,33 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupInit()
+        initSetup()
+        initState()
     }
 
-    private fun setupInit() {
-        setup1Observers()
-        setup2Listeners()
-        setup3TextWatcher()
-        setup4Vars()
-        setup5InitFunctions()
+    private fun initSetup() {
+        setupObservers()
+        setupListeners()
+        setupTextWatcher()
+        setupVars()
+        setupInitFunctions()
     }
 
-    open fun setup1Observers() {}
-    open fun setup2Listeners() {}
-    open fun setup3TextWatcher() {}
-    open fun setup4Vars() {}
-    open fun setup5InitFunctions() {}
+    private fun initState() {
+        onStateLoading()
+        onStateLoaded(null)
+        onStateError(null)
+    }
+
+    open fun setupObservers() {}
+    open fun setupListeners() {}
+    open fun setupTextWatcher() {}
+    open fun setupVars() {}
+    open fun setupInitFunctions() {}
+
+    open fun onStateLoading() {}
+    open fun onStateLoaded(success: Any?) {}
+    open fun onStateError(message: String?) {}
 
     open fun onBackPressed() {}
 
