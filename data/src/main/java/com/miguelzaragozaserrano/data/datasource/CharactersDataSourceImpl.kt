@@ -17,7 +17,7 @@ class CharactersDataSourceImpl @Inject constructor(
             if (it != null) {
                 Either.Right(success = it)
             } else {
-                Either.Left(error = Error.Unknown("Can't access to the server"))
+                Either.Left(error = Error.Connectivity)
             }
         }.getOrElse {
             Either.Left(error = Error.Unknown(it.message))
