@@ -1,6 +1,6 @@
 package com.miguelzaragozaserrano.marvel.models
 
-import com.miguelzaragozaserrano.characters.utils.Error
+import com.miguelzaragozaserrano.data.utils.Error
 import com.miguelzaragozaserrano.marvel.utils.Status
 
 data class CharactersState(

@@ -1,8 +1,8 @@
 package com.miguelzaragozaserrano.marvel.utils.extensions
 
-import com.miguelzaragozaserrano.characters.models.response.Character
-import com.miguelzaragozaserrano.characters.models.response.Characters
-import com.miguelzaragozaserrano.characters.utils.extensions.orEmpty
+import com.miguelzaragozaserrano.data.models.response.Character
+import com.miguelzaragozaserrano.data.models.response.Characters
+import com.miguelzaragozaserrano.data.utils.extensions.orEmpty
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
 

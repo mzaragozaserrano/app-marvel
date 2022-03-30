@@ -1,9 +1,9 @@
 package com.miguelzaragozaserrano.domain.usecases
 
-import com.miguelzaragozaserrano.characters.models.response.Characters
-import com.miguelzaragozaserrano.characters.repositories.CharactersRepository
-import com.miguelzaragozaserrano.characters.utils.Either
-import com.miguelzaragozaserrano.characters.utils.Error
+import com.miguelzaragozaserrano.data.models.response.Characters
+import com.miguelzaragozaserrano.data.repositories.CharactersRepository
+import com.miguelzaragozaserrano.data.utils.Either
+import com.miguelzaragozaserrano.data.utils.Error
 import com.miguelzaragozaserrano.domain.base.BaseUseCase
 import com.miguelzaragozaserrano.domain.utils.extensions.orEmpty
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +24,9 @@ class CharactersUseCaseImpl @Inject constructor(private val repository: Characte
             }.map { either ->
                 when (either) {
                     is Either.Right -> emit(Either.Right(either.success))
-                    is Either.Left -> emit(Either.Left(Error.Unknown(
+                    is Either.Left -> emit(
+                        Either.Left(
+                            Error.Unknown(
                         "Can't access to the server")))
                 }
             }

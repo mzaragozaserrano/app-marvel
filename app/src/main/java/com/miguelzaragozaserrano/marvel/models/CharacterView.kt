@@ -1,9 +1,9 @@
 package com.miguelzaragozaserrano.marvel.models
 
 import android.os.Parcelable
-import com.miguelzaragozaserrano.characters.models.response.Character
-import com.miguelzaragozaserrano.characters.models.response.CharacterThumbnail
-import com.miguelzaragozaserrano.characters.utils.extensions.empty
+import com.miguelzaragozaserrano.data.models.response.Character
+import com.miguelzaragozaserrano.data.models.response.CharacterThumbnail
+import com.miguelzaragozaserrano.data.utils.extensions.empty
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

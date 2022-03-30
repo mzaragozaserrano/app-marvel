@@ -1,9 +1,9 @@
 package com.miguelzaragozaserrano.marvel.di
 
-import com.miguelzaragozaserrano.characters.datasource.CharactersDataSource
-import com.miguelzaragozaserrano.characters.datasource.CharactersDataSourceImpl
-import com.miguelzaragozaserrano.characters.repositories.CharactersRepositoryImpl
-import com.miguelzaragozaserrano.characters.repositories.CharactersRepository
+import com.miguelzaragozaserrano.data.datasource.CharactersDataSource
+import com.miguelzaragozaserrano.data.datasource.CharactersDataSourceImpl
+import com.miguelzaragozaserrano.data.repositories.CharactersRepositoryImpl
+import com.miguelzaragozaserrano.data.repositories.CharactersRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

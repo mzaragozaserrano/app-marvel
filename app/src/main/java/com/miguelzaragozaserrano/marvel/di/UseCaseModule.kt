@@ -1,6 +1,6 @@
 package com.miguelzaragozaserrano.marvel.di
 
-import com.miguelzaragozaserrano.characters.repositories.CharactersRepositoryImpl
+import com.miguelzaragozaserrano.data.repositories.CharactersRepositoryImpl
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import dagger.Binds

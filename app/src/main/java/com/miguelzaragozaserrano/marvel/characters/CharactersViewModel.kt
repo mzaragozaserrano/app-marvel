@@ -1,9 +1,9 @@
 package com.miguelzaragozaserrano.marvel.characters
 
 import androidx.lifecycle.viewModelScope
-import com.miguelzaragozaserrano.characters.utils.Error
-import com.miguelzaragozaserrano.characters.utils.onFailure
-import com.miguelzaragozaserrano.characters.utils.onSuccess
+import com.miguelzaragozaserrano.data.utils.Error
+import com.miguelzaragozaserrano.data.utils.onFailure
+import com.miguelzaragozaserrano.data.utils.onSuccess
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import com.miguelzaragozaserrano.marvel.base.BaseViewModel
