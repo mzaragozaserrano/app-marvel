@@ -5,10 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
+
     lateinit var binding: VB
+    private lateinit var layoutInflater: View
+
+    private val progressDialog: AlertDialog by lazy {
+        AlertDialog.Builder(this, R.style.TransparentDialog)
+            .setView(layoutInflater)
+            .setCancelable(false)
+            .create()
+    }
+
+    private val animation: LottieAnimationView by lazy {
+        layoutInflater.findViewById(R.id.animation_view)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        layoutInflater = View.inflate(applicationContext, R.layout.progress_bar, null)
         binding = getViewBinding()
         setContentView(binding.root)
         setupInit()
