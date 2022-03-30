@@ -7,7 +7,8 @@ import com.miguelzaragozaserrano.data.utils.onSuccess
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import com.miguelzaragozaserrano.marvel.base.BaseViewModel
-import com.miguelzaragozaserrano.marvel.models.CharactersState
+import com.miguelzaragozaserrano.marvel.models.CharactersView
+import com.miguelzaragozaserrano.marvel.models.State
 import com.miguelzaragozaserrano.marvel.utils.Status
 import com.miguelzaragozaserrano.marvel.utils.extensions.cancelIfActive
 import com.miguelzaragozaserrano.marvel.utils.extensions.toCharactersView
@@ -23,10 +24,10 @@ class CharactersViewModel @Inject constructor(private val charactersUseCase: @Jv
 
     private var getCharactersJob: Job? = null
 
-    private var _charactersState = MutableStateFlow(CharactersState())
+    private var _charactersState = MutableStateFlow(State<CharactersView>())
     val charactersState get() = _charactersState.asStateFlow()
 
-    fun getCharacters(fromPagination: Boolean = false) {
+    fun executeGetCharacters(fromPagination: Boolean = false) {
         getCharactersJob.cancelIfActive()
         getCharactersJob = viewModelScope.launch {
             charactersUseCase(CharactersUseCaseImpl.Params(fromPagination))
@@ -34,7 +35,7 @@ class CharactersViewModel @Inject constructor(private val charactersUseCase: @Jv
                 .onCompletion { _charactersState.update { it.copy(status = Status.LOADED) } }
                 .catch { throwable ->
                     _charactersState.update {
-                        CharactersState(
+                        State(
                             status = Status.ERROR,
                             error = Error.Unknown(throwable.message)
                         )
