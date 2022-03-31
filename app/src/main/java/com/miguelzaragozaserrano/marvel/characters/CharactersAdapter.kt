@@ -7,14 +7,15 @@ import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.databinding.ItemCharacterBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.utils.extensions.inflate
+import com.miguelzaragozaserrano.marvel.utils.extensions.loadFromUrl
 import kotlin.properties.Delegates
 
-class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
+class CharactersAdapter(private val listener: OnShowDetails) :
+    RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
+
     internal var collection: List<CharacterView> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
-    internal var characterListener: (CharacterView, View) -> Unit =
-        { _: CharacterView, _: View -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         CharactersViewHolder(parent.inflate(R.layout.item_character))
@@ -22,7 +23,7 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
     override fun getItemCount(): Int = collection.size
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
-        holder.bind(collection[position], characterListener)
+        holder.bind(collection[position], listener)
     }
 
     inner class CharactersViewHolder(itemView: View) :
@@ -30,8 +31,16 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
 
         private val binding = ItemCharacterBinding.bind(itemView)
 
-        fun bind(item: CharacterView, characterListener: (CharacterView, View) -> Unit) {
-            binding.characterName.text = item.name
+        fun bind(item: CharacterView, listener: OnShowDetails) {
+            with(binding) {
+                nameCharacter.text = item.name
+                avatarCharacter.loadFromUrl(item.image)
+                itemView.setOnClickListener { listener.onClick(item) }
+            }
         }
     }
+}
+
+class OnShowDetails(val onShowDetails: (item: CharacterView) -> Unit) {
+    fun onClick(item: CharacterView) = onShowDetails(item)
 }
