@@ -1,7 +1,7 @@
 package com.miguelzaragozaserrano.marvel.utils.extensions
 
-import com.miguelzaragozaserrano.data.utils.Failure
-import com.miguelzaragozaserrano.marvel.models.State
+import com.miguelzaragozaserrano.data.utils.*
+import com.miguelzaragozaserrano.marvel.models.UiState
 import com.miguelzaragozaserrano.marvel.utils.Status
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,7 +12,7 @@ suspend fun <T : Any, L : StateFlow<T>> collect(
     error: (String?) -> Unit
 ) {
     flow.collect {
-        val state = (it as State<*>)
+        val state = (it as UiState<*, *>)
         when (state.status) {
             Status.LOADING -> {
                 loading.invoke()
