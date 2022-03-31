@@ -22,10 +22,10 @@ suspend fun <T : Any, L : StateFlow<T>> collect(
             }
             Status.ERROR -> {
                 when (state.error) {
-                    is Failure.Connectivity -> error.invoke("Error en la conexión")
-                    is Failure.Server -> error.invoke("Error en el servidor")
-                    is Failure.Unknown -> error.invoke((state.error as Failure.Unknown).message)
-                    is Failure.Throwable -> error.invoke((state.error as Failure.Throwable).throwable?.message)
+                    is Error.Connectivity -> error.invoke("Error en la conexión")
+                    is Error.Server -> error.invoke("Error en el servidor")
+                    is Error.Unknown -> error.invoke((state.error as Error.Unknown).message)
+                    is Error.Throwable -> error.invoke((state.error as Error.Throwable).throwable?.message)
                 }
             }
         }
