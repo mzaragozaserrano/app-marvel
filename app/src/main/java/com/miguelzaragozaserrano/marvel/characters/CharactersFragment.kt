@@ -16,9 +16,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
-    private val binding by viewBinding(FragmentCharactersBinding::bind)
     private val viewModel: CharactersViewModel by viewModels()
-    private val adapter: CharactersAdapter by lazy { CharactersAdapter() }
+    private val binding by viewBinding(FragmentCharactersBinding::bind)
+
+    private val adapter: CharactersAdapter by lazy {
+        CharactersAdapter(OnShowDetails {
+
+        })
+    }
 
     override fun setupObservers() {
         super.setupObservers()
