@@ -6,7 +6,8 @@ import com.miguelzaragozaserrano.data.utils.*
 import javax.inject.Inject
 
 class CharactersDataSourceImpl @Inject constructor(
-    private val charactersService: CharactersService,
+    private val networkHandler: NetworkHandler,
+    private val service: CharactersService,
 ) : CharactersDataSource {
 
     override suspend fun getCharacters(fromPagination: Boolean): Either<Failure, Result<Characters>> {
