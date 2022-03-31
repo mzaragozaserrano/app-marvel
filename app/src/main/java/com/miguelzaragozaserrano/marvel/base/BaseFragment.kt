@@ -39,11 +39,10 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     }
 
     private fun initSetup() {
-        setupObservers()
-        setupListeners()
-        setupTextWatcher()
-        setupVars()
-        setupInitFunctions()
+        setup1Observers()
+        setup2Listeners()
+        setup3Vars()
+        setup4InitFunctions()
     }
 
     private fun initState() {
@@ -52,11 +51,10 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         onStateError(null)
     }
 
-    open fun setupObservers() {}
-    open fun setupListeners() {}
-    open fun setupTextWatcher() {}
-    open fun setupVars() {}
-    open fun setupInitFunctions() {}
+    open fun setup1Observers() {}
+    open fun setup2Listeners() {}
+    open fun setup3Vars() {}
+    open fun setup4InitFunctions() {}
 
     open fun onStateLoading() {}
     open fun onStateLoaded(success: Any?) {}
