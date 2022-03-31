@@ -6,30 +6,29 @@ import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
 import com.miguelzaragozaserrano.marvel.models.CharactersView
-import com.miguelzaragozaserrano.marvel.utils.extensions.collect
-import com.miguelzaragozaserrano.marvel.utils.extensions.hideProgressDialog
-import com.miguelzaragozaserrano.marvel.utils.extensions.showProgressDialog
-import com.miguelzaragozaserrano.marvel.utils.extensions.snackBarLong
+import com.miguelzaragozaserrano.marvel.utils.extensions.*
 import com.miguelzaragozaserrano.marvel.utils.viewBinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
-    private val viewModel: CharactersViewModel by viewModels()
-    private val binding by viewBinding(FragmentCharactersBinding::bind)
+    private var rvEndListener = true
 
-    private val adapter: CharactersAdapter by lazy {
+    private val mViewModel: CharactersViewModel by viewModels()
+    private val mBinding by viewBinding(FragmentCharactersBinding::bind)
+
+    private val mAdapter: CharactersAdapter by lazy {
         CharactersAdapter(OnShowDetails {
 
         })
     }
 
-    override fun setupObservers() {
-        super.setupObservers()
+    override fun setup1Observers() {
+        super.setup1Observers()
         lifecycleScope.launchWhenStarted {
             collect(
-                viewModel.charactersState,
+                mViewModel.charactersState,
                 ::onStateLoading,
                 ::onStateLoaded,
                 ::onStateError
@@ -37,27 +36,43 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         }
     }
 
-    override fun setupVars() {
-        super.setupVars()
-        with(binding) {
-            listCharacters.adapter = adapter
+    override fun setup2Listeners() {
+        super.setup2Listeners()
+        with(mBinding) {
+            listCharacters.apply {
+                endless(mAdapter.itemCount) {
+                    rvEndListener = false
+                    mViewModel.executeGetCharacters(true)
+                }
+            }
         }
     }
 
-    override fun setupInitFunctions() {
-        super.setupInitFunctions()
+    override fun setup3Vars() {
+        super.setup3Vars()
+        with(mBinding) {
+            listCharacters.adapter = mAdapter
+        }
+    }
+
+    override fun setup4InitFunctions() {
+        super.setup4InitFunctions()
         onStateLoading()
     }
 
     override fun onStateLoading() {
         showProgressDialog()
-        viewModel.executeGetCharacters(false)
+        mViewModel.executeGetCharacters()
     }
 
     override fun onStateLoaded(success: Any?) {
         if (success != null) {
             hideProgressDialog()
-            adapter.collection = (success as CharactersView).results
+            rvEndListener = true
+            mAdapter.collection.toMutableList().run {
+                addAll((success as CharactersView).results)
+                mAdapter.collection = this
+            }
         }
     }
 

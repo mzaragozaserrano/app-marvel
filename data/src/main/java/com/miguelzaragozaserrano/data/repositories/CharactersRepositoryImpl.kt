@@ -11,6 +11,6 @@ class CharactersRepositoryImpl @Inject constructor(
     private val charactersDataSource: CharactersDataSource,
 ) : CharactersRepository {
 
-    override suspend fun getCharacters(fromPagination: Boolean): Either<Failure, Result<Characters>> =
+    override suspend fun getCharacters(fromPagination: Boolean): Result<Characters> =
         charactersDataSource.getCharacters(fromPagination)
 }
