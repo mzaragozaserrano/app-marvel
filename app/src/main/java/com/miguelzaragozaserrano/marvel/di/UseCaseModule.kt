@@ -14,7 +14,7 @@ import dagger.hilt.android.components.ViewModelComponent
 interface UseCaseModule {
 
     @Binds
-    fun bind(useCase: CharactersUseCaseImpl): CharactersUseCase
+    fun bindUseCase(useCase: CharactersUseCaseImpl): CharactersUseCase
 
     companion object {
         @Provides
