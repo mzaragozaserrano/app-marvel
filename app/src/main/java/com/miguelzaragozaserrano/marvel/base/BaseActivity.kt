@@ -31,26 +31,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         layoutInflater = View.inflate(applicationContext, R.layout.progress_bar, null)
         binding = getViewBinding()
         setContentView(binding.root)
-        setupInit()
     }
 
     abstract fun getViewBinding(): VB
-
-    private fun setupInit() {
-        setupToolbar()
-        setupMenu()
-        setupNavigation()
-        setupVars()
-        setupInitFunctions()
-        setupClickListeners()
-    }
-
-    open fun setupToolbar() {}
-    open fun setupMenu() {}
-    open fun setupNavigation() {}
-    open fun setupVars() {}
-    open fun setupInitFunctions() {}
-    open fun setupClickListeners() {}
 
     fun showProgressDialog() {
         if (!progressDialog.isShowing) {
