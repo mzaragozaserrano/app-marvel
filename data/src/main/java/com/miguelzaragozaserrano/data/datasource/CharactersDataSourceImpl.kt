@@ -10,9 +10,9 @@ class CharactersDataSourceImpl @Inject constructor(
     private val service: CharactersService,
 ) : CharactersDataSource {
 
-    override suspend fun getCharacters(fromPagination: Boolean): Result<Characters> {
+    override suspend fun getCharacters(fromPagination: Boolean, offset: Int): Result<Characters> {
         return runCatching {
-            getCharactersFromService()
+            getCharactersFromService(offset)
         }.map { state ->
             return when (state) {
                 is Failure -> Either.Left(Failure(state.error))
@@ -30,9 +30,9 @@ class CharactersDataSourceImpl @Inject constructor(
            emit(getCharactersFromService())
        }*/
 
-    private suspend fun getCharactersFromService(): State<Characters> =
+    private suspend fun getCharactersFromService(offset: Int): State<Characters> =
         if (networkHandler.isConnected()) {
-            service.getCharacters(20, 0).run {
+            service.getCharacters(20, offset).run {
                 if (isSuccessful && body() != null) {
                     val data = body()?.data
                     requireNotNull(data)

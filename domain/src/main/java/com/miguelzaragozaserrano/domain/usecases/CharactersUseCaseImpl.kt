@@ -4,6 +4,7 @@ import com.miguelzaragozaserrano.data.models.response.Characters
 import com.miguelzaragozaserrano.data.repositories.CharactersRepository
 import com.miguelzaragozaserrano.data.utils.Either
 import com.miguelzaragozaserrano.data.utils.Result
+import com.miguelzaragozaserrano.data.utils.extensions.orEmpty
 import com.miguelzaragozaserrano.domain.base.BaseUseCase
 import com.miguelzaragozaserrano.domain.utils.extensions.orEmpty
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class CharactersUseCaseImpl @Inject constructor(private val repository: Characte
     override fun run(params: Params?): Flow<Result<@JvmSuppressWildcards Characters>> =
         flow {
             runCatching {
-                repository.getCharacters(params?.fromPagination.orEmpty())
+                repository.getCharacters(params?.fromPagination.orEmpty(), params?.offset.orEmpty())
             }.map { either ->
                 when (either) {
                     is Either.Right -> emit(Either.Right(either.success))
@@ -29,5 +30,5 @@ class CharactersUseCaseImpl @Inject constructor(private val repository: Characte
             }
         }
 
-    data class Params(val fromPagination: Boolean)
+    data class Params(val fromPagination: Boolean, val offset: Int)
 }

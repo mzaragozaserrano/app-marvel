@@ -23,6 +23,7 @@ import javax.inject.Inject
 class CharactersViewModel @Inject constructor(private val charactersUseCase: @JvmSuppressWildcards CharactersUseCase) :
     BaseViewModel() {
 
+    private var offset = 0
     private var getCharactersJob: Job? = null
 
     private var _charactersState = MutableStateFlow(UiState<Characters, CharactersView>())
@@ -31,9 +32,10 @@ class CharactersViewModel @Inject constructor(private val charactersUseCase: @Jv
     fun executeGetCharacters(fromPagination: Boolean = false) {
         getCharactersJob.cancelIfActive()
         getCharactersJob = viewModelScope.launch {
-            charactersUseCase(CharactersUseCaseImpl.Params(fromPagination))
+            charactersUseCase(CharactersUseCaseImpl.Params(fromPagination, offset))
                 .update(_charactersState) { state ->
                     _charactersState.update {
+                        offset += 20
                         it.copy(
                             status = Status.LOADED,
                             success = state.data.toCharactersView()
