@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikeys.properties")
@@ -39,8 +40,8 @@ android {
             buildConfigField "String", "ENVIRONMENT", "\"PRE\""
             buildConfigField "String", "DATA_BASE", "\"PRE-MARVEL\""
             buildConfigField "String", "BASE_URL", "\"https://gateway.marvel.com/\""
-            buildConfigField "String", "PUBLIC_KEY", apikeyProperties["PUBLIC_KEY"]?:"\"\""
-            buildConfigField "String", "PRIVATE_KEY", apikeyProperties["PRIVATE_KEY"]?:"\"\""
+            buildConfigField "String", "PUBLIC_KEY", apikeyProperties["PUBLIC_KEY"] ?: "\"\""
+            buildConfigField "String", "PRIVATE_KEY", apikeyProperties["PRIVATE_KEY"] ?: "\"\""
         }
 
         Production {
@@ -48,8 +49,8 @@ android {
             buildConfigField "String", "ENVIRONMENT", "\"PRO\""
             buildConfigField "String", "DATA_BASE", "\"PRO-MARVEL\""
             buildConfigField "String", "BASE_URL", "\"https://gateway.marvel.com/\""
-            buildConfigField "String", "PUBLIC_KEY", apikeyProperties["PUBLIC_KEY"]?:"\"\""
-            buildConfigField "String", "PRIVATE_KEY", apikeyProperties["PRIVATE_KEY"]?:"\"\""
+            buildConfigField "String", "PUBLIC_KEY", apikeyProperties["PUBLIC_KEY"] ?: "\"\""
+            buildConfigField "String", "PRIVATE_KEY", apikeyProperties["PRIVATE_KEY"] ?: "\"\""
         }
     }
 }
@@ -58,6 +59,11 @@ dependencies {
 
     // Javax Inject
     api "javax.inject:javax.inject:1"
+
+    //Hilt
+    def hilt_version = "2.41"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Room
     def room_version = "2.4.2"
