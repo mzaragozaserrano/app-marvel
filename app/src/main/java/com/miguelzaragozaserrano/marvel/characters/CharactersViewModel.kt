@@ -1,7 +1,7 @@
 package com.miguelzaragozaserrano.marvel.characters
 
 import androidx.lifecycle.viewModelScope
-import com.miguelzaragozaserrano.data.utils.Error
+import com.miguelzaragozaserrano.data.utils.Failure
 import com.miguelzaragozaserrano.data.utils.onFailure
 import com.miguelzaragozaserrano.data.utils.onSuccess
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
@@ -37,7 +37,7 @@ class CharactersViewModel @Inject constructor(private val charactersUseCase: @Jv
                     _charactersState.update {
                         State(
                             status = Status.ERROR,
-                            error = Error.Unknown(throwable.message)
+                            error = Failure.Unknown(throwable.message)
                         )
                     }
                 }
