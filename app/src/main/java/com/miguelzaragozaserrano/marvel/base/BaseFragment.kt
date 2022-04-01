@@ -22,6 +22,7 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setup4InitFunctions()
         onBackPressedDispatcher(this)
     }
 
@@ -35,20 +36,12 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSetup()
-        initState()
     }
 
     private fun initSetup() {
         setup1Observers()
         setup2Listeners()
         setup3Vars()
-        setup4InitFunctions()
-    }
-
-    private fun initState() {
-        onStateLoading()
-        onStateLoaded(null)
-        onStateError(null)
     }
 
     open fun setup1Observers() {}
@@ -56,6 +49,7 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     open fun setup3Vars() {}
     open fun setup4InitFunctions() {}
 
+    open fun onStatePaused() {}
     open fun onStateLoading() {}
     open fun onStateLoaded(success: Any?) {}
     open fun onStateError(message: String?) {}
