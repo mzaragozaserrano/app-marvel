@@ -2,6 +2,7 @@ package com.miguelzaragozaserrano.marvel.characters
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
@@ -19,8 +20,8 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     private val mBinding by viewBinding(FragmentCharactersBinding::bind)
 
     private val mAdapter: CharactersAdapter by lazy {
-        CharactersAdapter(OnShowDetails {
-
+        CharactersAdapter(OnShowDetails { character ->
+            onCharacterDetails(character)
         })
     }
 
@@ -81,6 +82,12 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
             hideProgressDialog()
             view?.let { snackBarLong(it, message) }
         }
+    }
+
+    private fun onCharacterDetails(character: CharacterView) {
+        val directions =
+            CharactersFragmentDirections.actionCharactersFragmentToCharacterFragment(character)
+        findNavController().navigate(directions)
     }
 
 }
