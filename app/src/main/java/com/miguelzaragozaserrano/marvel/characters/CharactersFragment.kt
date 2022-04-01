@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
+import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
 import com.miguelzaragozaserrano.marvel.utils.extensions.*
 import com.miguelzaragozaserrano.marvel.utils.viewBinding.viewBinding
@@ -27,7 +28,7 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup1Observers() {
         super.setup1Observers()
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             collect(
                 mViewModel.charactersState,
                 ::onStateLoading,
@@ -58,28 +59,34 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup4InitFunctions() {
         super.setup4InitFunctions()
-        onStateLoading()
+        mViewModel.executeGetCharacters()
+    }
+
+    override fun onStatePaused() {
+        hideProgressDialog()
     }
 
     override fun onStateLoading() {
         showProgressDialog()
-        mViewModel.executeGetCharacters()
     }
 
     override fun onStateLoaded(success: Any?) {
+        hideProgressDialog()
         if (success != null) {
-            hideProgressDialog()
-            rvEndListener = true
-            mAdapter.collection.toMutableList().run {
-                addAll((success as CharactersView).results)
-                mAdapter.collection = this
+            val results = (success as CharactersView).results
+            if (!mAdapter.collection.containsAll(results)) {
+                rvEndListener = true
+                mAdapter.collection.toMutableList().run {
+                    addAll(results)
+                    mAdapter.collection = this
+                }
             }
         }
     }
 
     override fun onStateError(message: String?) {
+        hideProgressDialog()
         if (message != null) {
-            hideProgressDialog()
             view?.let { snackBarLong(it, message) }
         }
     }
