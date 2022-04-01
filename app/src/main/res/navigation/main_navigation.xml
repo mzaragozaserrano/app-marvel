@@ -9,6 +9,22 @@
         android:id="@+id/charactersFragment"
         android:name="com.miguelzaragozaserrano.marvel.characters.CharactersFragment"
         android:label="fragment_characters"
-        tools:layout="@layout/fragment_characters" />
+        tools:layout="@layout/fragment_characters" >
+        <action
+            android:id="@+id/action_charactersFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.miguelzaragozaserrano.marvel.character.CharacterFragment"
+        android:label="fragment_character"
+        tools:layout="@layout/fragment_character" >
+        <argument
+            android:name="character"
+            android:defaultValue="@null"
+            app:argType="com.miguelzaragozaserrano.marvel.models.CharacterView"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>
