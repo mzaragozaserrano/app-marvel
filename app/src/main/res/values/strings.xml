@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Marvel</string>
+    <string name="show_info">Ver info</string>
+    <string name="details_error">Información no disponible.</string>
 </resources>
