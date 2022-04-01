@@ -42,7 +42,7 @@ class CharactersDataSourceImpl @Inject constructor(
                 }
             }
         } else {
-            Failure(Error.Connectivity)
+            Failure(Error.Connectivity())
         }
 }
 /*return if (networkHandler.isConnected()) {
