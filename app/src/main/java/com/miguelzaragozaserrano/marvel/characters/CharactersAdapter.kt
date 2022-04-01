@@ -35,7 +35,7 @@ class CharactersAdapter(private val listener: OnShowDetails) :
             with(binding) {
                 nameCharacter.text = item.name
                 avatarCharacter.loadFromUrl(item.image)
-                itemView.setOnClickListener { listener.onClick(item) }
+                buttonInfo.setOnClickListener { listener.onClick(item) }
             }
         }
     }
