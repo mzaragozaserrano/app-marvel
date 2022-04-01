@@ -23,7 +23,7 @@ import javax.inject.Inject
 class CharactersViewModel @Inject constructor(private val charactersUseCase: @JvmSuppressWildcards CharactersUseCase) :
     BaseViewModel() {
 
-    private var offset = 0
+    var offset = 0
     private var getCharactersJob: Job? = null
 
     private var _charactersState = MutableStateFlow(UiState<Characters, CharactersView>())
