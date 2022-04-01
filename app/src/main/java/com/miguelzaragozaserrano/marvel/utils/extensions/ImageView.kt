@@ -16,7 +16,6 @@ fun AppCompatImageView.loadFromUrl(url: String) =
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.error_image)
         )
-        .skipMemoryCache(true)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
