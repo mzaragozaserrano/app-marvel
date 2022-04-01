@@ -32,16 +32,16 @@ suspend fun <T : Any, L : StateFlow<T>> collect(
     }
 }
 
-suspend fun <T : Any, G: Any> Flow<Result<T>>.update(
+suspend fun <T : Any, G : Any> Flow<Result<T>>.update(
     _state: MutableStateFlow<UiState<T, G>>,
     onSuccess: (Success<T>) -> Unit
 ) {
-    onStart { _state.update { it.copy(status = Status.LOADING) } }
-        .onCompletion { _state.update { it.copy(status = Status.LOADED) } }
+    onStart { _state.update { it.copy(status = LOADING) } }
+        .onCompletion { _state.update { it.copy(status = LOADED) } }
         .catch { throwable ->
             _state.update {
                 UiState(
-                    status = Status.ERROR,
+                    status = ERROR,
                     error = Error.Unknown(throwable.message)
                 )
             }
@@ -50,7 +50,7 @@ suspend fun <T : Any, G: Any> Flow<Result<T>>.update(
             either.onFailure { failure ->
                 _state.update {
                     it.copy(
-                        status = Status.ERROR,
+                        status = ERROR,
                         error = failure.error
                     )
                 }
