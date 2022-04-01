@@ -2,7 +2,7 @@ package com.miguelzaragozaserrano.marvel.utils.extensions
 
 import com.miguelzaragozaserrano.data.utils.*
 import com.miguelzaragozaserrano.marvel.models.UiState
-import com.miguelzaragozaserrano.marvel.utils.Status.*
+import com.miguelzaragozaserrano.marvel.utils.Status
 import kotlinx.coroutines.flow.*
 
 suspend fun <T : Any, L : StateFlow<T>> collect(
@@ -14,13 +14,13 @@ suspend fun <T : Any, L : StateFlow<T>> collect(
     flow.collect {
         val state = (it as UiState<*, *>)
         when (state.status) {
-            LOADING -> {
+            Status.LOADING -> {
                 loading.invoke()
             }
-            LOADED -> {
+            Status.LOADED -> {
                 loaded.invoke(state.success)
             }
-            ERROR -> {
+            Status.ERROR -> {
                 when (state.error) {
                     is Error.Server -> error.invoke("Error en el servidor")
                     is Error.Unknown -> error.invoke((state.error as Error.Unknown).message)
