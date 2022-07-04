@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import com.miguelzaragozaserrano.marvel.utils.extensions.snackBarLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
@@ -49,10 +50,11 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     open fun setup3Vars() {}
     open fun setup4InitFunctions() {}
 
-    open fun onStatePaused() {}
-    open fun onStateLoading() {}
-    open fun onStateLoaded(success: Any?) {}
-    open fun onStateError(message: String?) {}
+    open fun onStateError(message: String?) {
+        if (message != null) {
+            view?.let { snackBarLong(it, message) }
+        }
+    }
 
     open fun onBackPressed() {}
 

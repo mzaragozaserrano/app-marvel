@@ -8,7 +8,9 @@ import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
-import com.miguelzaragozaserrano.marvel.utils.extensions.*
+import com.miguelzaragozaserrano.marvel.utils.extensions.collect
+import com.miguelzaragozaserrano.marvel.utils.extensions.endless
+import com.miguelzaragozaserrano.marvel.utils.extensions.hideProgressDialog
 import com.miguelzaragozaserrano.marvel.utils.viewBinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,12 +31,7 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     override fun setup1Observers() {
         super.setup1Observers()
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            collect(
-                mViewModel.charactersState,
-                ::onStateLoading,
-                ::onStateLoaded,
-                ::onStateError
-            )
+            collect(mViewModel.charactersState, ::onCharactersLoaded)
         }
     }
 
@@ -59,20 +56,16 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup4InitFunctions() {
         super.setup4InitFunctions()
+        executeGetCharacters()
+    }
+
+    private fun executeGetCharacters() {
         mViewModel.executeGetCharacters()
     }
 
-    override fun onStatePaused() {
-        hideProgressDialog()
-    }
-
-    override fun onStateLoading() {
-        showProgressDialog()
-    }
-
-    override fun onStateLoaded(success: Any?) {
-        hideProgressDialog()
+    private fun onCharactersLoaded(success: Any?) {
         if (success != null) {
+            hideProgressDialog()
             val results = (success as CharactersView).results
             if (!mAdapter.collection.containsAll(results)) {
                 rvEndListener = true
@@ -81,13 +74,6 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
                     mAdapter.collection = this
                 }
             }
-        }
-    }
-
-    override fun onStateError(message: String?) {
-        hideProgressDialog()
-        if (message != null) {
-            view?.let { snackBarLong(it, message) }
         }
     }
 
