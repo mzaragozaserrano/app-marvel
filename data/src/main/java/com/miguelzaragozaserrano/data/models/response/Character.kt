@@ -17,7 +17,8 @@ data class Character(
         description = description,
         modified = modified,
         resourceURI = resourceURI,
-        characterImage = thumbnail?.toCharacterThumbnailEntity(),
+        path = thumbnail?.path,
+        extension = thumbnail?.extension,
         favorite = null
     )
 }

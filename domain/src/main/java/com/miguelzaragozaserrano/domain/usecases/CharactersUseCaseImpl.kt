@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-typealias CharactersUseCase = BaseUseCase<@JvmSuppressWildcards Result<Characters>, CharactersUseCaseImpl.Params>
+typealias GetCharacters = BaseUseCase<@JvmSuppressWildcards Result<Characters>, CharactersUseCaseImpl.Params>
 
 @Singleton
 class CharactersUseCaseImpl @Inject constructor(private val repository: CharactersRepository) :
-    CharactersUseCase() {
+    GetCharacters() {
 
     override fun run(params: Params?): Flow<Result<@JvmSuppressWildcards Characters>> =
         flow {

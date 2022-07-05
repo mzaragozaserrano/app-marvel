@@ -1,7 +1,7 @@
 package com.miguelzaragozaserrano.marvel.di
 
 import com.miguelzaragozaserrano.data.repositories.CharactersRepositoryImpl
-import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
+import com.miguelzaragozaserrano.domain.usecases.GetCharacters
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import dagger.Binds
 import dagger.Module
@@ -14,7 +14,7 @@ import dagger.hilt.android.components.ViewModelComponent
 interface UseCaseModule {
 
     @Binds
-    fun bindUseCase(useCase: CharactersUseCaseImpl): CharactersUseCase
+    fun bindUseCase(useCase: CharactersUseCaseImpl): GetCharacters
 
     companion object {
         @Provides

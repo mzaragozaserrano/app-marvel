@@ -2,7 +2,7 @@ package com.miguelzaragozaserrano.marvel.characters
 
 import androidx.lifecycle.viewModelScope
 import com.miguelzaragozaserrano.data.models.response.Characters
-import com.miguelzaragozaserrano.domain.usecases.CharactersUseCase
+import com.miguelzaragozaserrano.domain.usecases.GetCharacters
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import com.miguelzaragozaserrano.marvel.base.BaseViewModel
 import com.miguelzaragozaserrano.marvel.models.CharactersView
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharactersViewModel @Inject constructor(private val charactersUseCase: @JvmSuppressWildcards CharactersUseCase) :
+class CharactersViewModel @Inject constructor(private val getCharacters: @JvmSuppressWildcards GetCharacters) :
     BaseViewModel() {
 
     var offset = 0
@@ -32,7 +32,7 @@ class CharactersViewModel @Inject constructor(private val charactersUseCase: @Jv
     fun executeGetCharacters(fromPagination: Boolean = false) {
         getCharactersJob.cancelIfActive()
         getCharactersJob = viewModelScope.launch {
-            charactersUseCase(CharactersUseCaseImpl.Params(fromPagination, offset))
+            getCharacters(CharactersUseCaseImpl.Params(fromPagination, offset))
                 .update(_charactersState) { state ->
                     _charactersState.update {
                         offset += 20

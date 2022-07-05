@@ -1,17 +1,21 @@
 package com.miguelzaragozaserrano.data.models.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.miguelzaragozaserrano.data.models.response.Character
+import com.miguelzaragozaserrano.data.models.response.CharacterThumbnail
 import com.miguelzaragozaserrano.data.utils.extensions.empty
 
 @Entity
 data class CharacterEntity(
+    @PrimaryKey(autoGenerate = true)
     val id: Int?,
     val name: String?,
     val description: String?,
     val modified: String?,
     val resourceURI: String?,
-    val characterImage: CharacterThumbnailEntity?,
+    val path: String?,
+    val extension: String?,
     val favorite: Boolean?,
 ) {
     companion object {
@@ -22,7 +26,8 @@ data class CharacterEntity(
                 String.empty(),
                 null,
                 String.empty(),
-                CharacterThumbnailEntity.empty(),
+                String.empty(),
+                String.empty(),
                 null
             )
     }
@@ -33,5 +38,6 @@ data class CharacterEntity(
             description,
             modified,
             resourceURI,
-            characterImage?.toCharacterThumbnail())
+            CharacterThumbnail(path.toString(), extension.toString()))
+
 }

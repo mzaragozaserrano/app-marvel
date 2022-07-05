@@ -7,8 +7,6 @@ import com.miguelzaragozaserrano.data.utils.extensions.orNotInfo
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
 
-
-
 fun Character.toCharacterView(): CharacterView = CharacterView(
     id = id.orEmpty(),
     name = name.orNotInfo(),
