@@ -14,4 +14,7 @@ interface CharactersDAO : BaseDao<CharacterEntity> {
     @Query("SELECT * FROM CharacterEntity")
     fun getAll(): List<CharacterEntity>
 
+    @Query("SELECT * FROM CharacterEntity LIMIT :limit OFFSET :offset")
+    fun getSome(limit: Int = 10, offset: Int): List<CharacterEntity>
+
 }

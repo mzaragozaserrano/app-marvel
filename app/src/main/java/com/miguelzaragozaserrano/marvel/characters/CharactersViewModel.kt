@@ -1,5 +1,6 @@
 package com.miguelzaragozaserrano.marvel.characters
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.miguelzaragozaserrano.data.models.response.Characters
 import com.miguelzaragozaserrano.domain.usecases.GetCharacters
@@ -35,7 +36,9 @@ class CharactersViewModel @Inject constructor(private val getCharacters: @JvmSup
             getCharacters(CharactersUseCaseImpl.Params(fromPagination, offset))
                 .update(_charactersState) { state ->
                     _charactersState.update {
-                        offset += 20
+                        state.data.results?.size?.let { newOffset ->
+                            offset += newOffset
+                        }
                         it.copy(
                             status = Status.LOADED,
                             success = state.data.toCharactersView()

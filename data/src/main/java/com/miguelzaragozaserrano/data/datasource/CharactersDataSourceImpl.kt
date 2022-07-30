@@ -17,7 +17,7 @@ class CharactersDataSourceImpl @Inject constructor(
             if (local.getCharacterCount() <= offset) {
                getCharactersFromService(offset, local)
             } else {
-                local.getCharacters()
+                local.getCharacters(offset)
             }
         }.map { state ->
             return when (state) {

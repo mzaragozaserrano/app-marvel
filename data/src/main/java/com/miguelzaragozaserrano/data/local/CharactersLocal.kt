@@ -21,9 +21,13 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
     override suspend fun getCharacterCount(): Int =
         withContext(Dispatchers.IO) { charactersDAO.characterCount() }
 
-    override suspend fun getCharacters(): State<Characters> =
+    override suspend fun getCharacters(offset: Int?): State<Characters> =
         withContext(Dispatchers.IO) {
-            val list = charactersDAO.getAll()
+            val list = if(offset == null) {
+                charactersDAO.getAll()
+            } else {
+                charactersDAO.getSome(20, offset)
+            }
             val characters = Characters(0, 20, 0, 0, list.map { it.toCharacter() }.toMutableList())
             Success(characters)
         }
