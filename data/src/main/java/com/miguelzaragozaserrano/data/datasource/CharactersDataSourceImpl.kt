@@ -15,7 +15,7 @@ class CharactersDataSourceImpl @Inject constructor(
     override suspend fun getCharacters(fromPagination: Boolean, offset: Int): Result<Characters> =
         runCatching {
             if (local.getCharacterCount() <= offset) {
-               getCharactersFromService(offset, local)
+               getCharactersFromService(offset)
             } else {
                 local.getCharacters(offset)
             }
@@ -28,9 +28,9 @@ class CharactersDataSourceImpl @Inject constructor(
             Either.Left(error = Failure(Error.Throwable(it)))
         }
 
-    private suspend fun getCharactersFromService(offset: Int, local: CharactersLocal): State<Characters> =
+    private suspend fun getCharactersFromService(offset: Int): State<Characters> =
         if (networkHandler.isConnected()) {
-            service.getCharacters(20, offset).run {
+            service.getCharacters(offset = offset).run {
                 if (isSuccessful && body() != null) {
                     val data = body()?.data
                     requireNotNull(data)

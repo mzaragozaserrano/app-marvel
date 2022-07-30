@@ -3,6 +3,7 @@ package com.miguelzaragozaserrano.data.service
 import com.miguelzaragozaserrano.data.models.entity.CharacterEntity
 import com.miguelzaragozaserrano.data.models.response.Characters
 import com.miguelzaragozaserrano.data.base.BaseResponse
+import com.miguelzaragozaserrano.data.utils.DataConstants.LIMIT
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,7 +18,7 @@ interface CharactersApi {
 
     @GET(CHARACTERS)
     suspend fun getCharacters(
-        @Query("limit") limit: Int? = 10,
+        @Query("limit") limit: Int? = LIMIT,
         @Query("offset") offset: Int? = 0,
     ): Response<BaseResponse<Characters>>
 

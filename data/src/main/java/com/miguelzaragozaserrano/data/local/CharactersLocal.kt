@@ -2,6 +2,7 @@ package com.miguelzaragozaserrano.data.local
 
 import com.miguelzaragozaserrano.data.dao.CharactersDAO
 import com.miguelzaragozaserrano.data.models.response.Characters
+import com.miguelzaragozaserrano.data.utils.DataConstants.LIMIT
 import com.miguelzaragozaserrano.data.utils.State
 import com.miguelzaragozaserrano.data.utils.Success
 import kotlinx.coroutines.Dispatchers
@@ -26,9 +27,9 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
             val list = if(offset == null) {
                 charactersDAO.getAll()
             } else {
-                charactersDAO.getSome(20, offset)
+                charactersDAO.getSome(LIMIT, offset)
             }
-            val characters = Characters(0, 20, 0, 0, list.map { it.toCharacter() }.toMutableList())
+            val characters = Characters(0, LIMIT, 0, 0, list.map { it.toCharacter() }.toMutableList())
             Success(characters)
         }
 
