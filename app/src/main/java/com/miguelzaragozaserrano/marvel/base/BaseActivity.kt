@@ -1,7 +1,9 @@
 package com.miguelzaragozaserrano.marvel.base
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,6 +15,7 @@ import com.miguelzaragozaserrano.marvel.R
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     lateinit var binding: VB
+    private lateinit var menu: Menu
     private lateinit var layoutInflater: View
 
     private val progressDialog: AlertDialog by lazy {
@@ -64,6 +67,10 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         )
         snackBar.setTextColor(ContextCompat.getColor(applicationContext, colorText))
         snackBar.show()
+    }
+
+    fun toastLong(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
 }

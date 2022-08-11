@@ -1,12 +1,12 @@
 package com.miguelzaragozaserrano.marvel.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import com.miguelzaragozaserrano.marvel.utils.extensions.setSupportActionBar
 import com.miguelzaragozaserrano.marvel.utils.extensions.snackBarLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -15,16 +15,14 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
 
     private val layoutID = layout
 
+    private var menuId: Int = 0
+    private var toolbar: Toolbar? = null
+    private lateinit var menu: Menu
+
     var callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             onBackPressed()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setup4InitFunctions()
-        onBackPressedDispatcher(this)
     }
 
     override fun onCreateView(
@@ -37,12 +35,21 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSetup()
+        setup4InitFunctions()
+        onBackPressedDispatcher(this)
     }
 
-    private fun initSetup() {
-        setup1Observers()
-        setup2Listeners()
-        setup3Vars()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        if (menuId != 0) {
+            inflater.inflate(menuId, menu)
+        }
+        this.menu = menu
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        toolbarItemSelected(itemSelected = item, menu = menu)
+        return true
     }
 
     open fun setup1Observers() {}
@@ -57,10 +64,39 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     }
 
     open fun onBackPressed() {}
+    open fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {}
+
+    fun setupToolbar(
+        toolbar: Toolbar,
+        titleId: Int,
+        menuId: Int?,
+        navigationIdIcon: Int?
+    ) {
+        setSupportActionBar(toolbar)
+        with(toolbar) {
+            if (navigationIdIcon != null) {
+                setNavigationIcon(navigationIdIcon)
+                setNavigationOnClickListener {
+                    onBackPressed()
+                }
+            }
+        }
+        toolbar.title = getString(titleId)
+        this.toolbar = toolbar
+        if (menuId != null) {
+            this.menuId = menuId
+        }
+    }
 
     private fun onBackPressedDispatcher(lifecycleOwner: LifecycleOwner) {
         requireActivity().onBackPressedDispatcher
             .addCallback(lifecycleOwner, callback)
+    }
+
+    private fun initSetup() {
+        setup1Observers()
+        setup2Listeners()
+        setup3Vars()
     }
 
 }
