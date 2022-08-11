@@ -4,4 +4,15 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="Marvel.Toolbar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorSecondary">@color/primaryDarkColor</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+    </style>
+
 </resources>
