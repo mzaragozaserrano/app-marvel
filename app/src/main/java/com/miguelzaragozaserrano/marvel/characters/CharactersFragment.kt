@@ -1,5 +1,7 @@
 package com.miguelzaragozaserrano.marvel.characters
 
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -8,9 +10,7 @@ import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
-import com.miguelzaragozaserrano.marvel.utils.extensions.collect
-import com.miguelzaragozaserrano.marvel.utils.extensions.endless
-import com.miguelzaragozaserrano.marvel.utils.extensions.hideProgressDialog
+import com.miguelzaragozaserrano.marvel.utils.extensions.*
 import com.miguelzaragozaserrano.marvel.utils.viewBinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +41,7 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
             listCharacters.apply {
                 endless(mAdapter.itemCount) {
                     rvEndListener = false
-                    mViewModel.executeGetCharacters(true)
+                    executeGetCharacters(true)
                 }
             }
         }
@@ -56,23 +56,36 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup4InitFunctions() {
         super.setup4InitFunctions()
+        setupToolbar(
+            toolbar = mBinding.toolbarComponent.toolbar,
+            titleId = R.string.title_app,
+            menuId = R.menu.characters_menu,
+            navigationIdIcon = null
+        )
         executeGetCharacters()
     }
 
-    private fun executeGetCharacters() {
-        mViewModel.executeGetCharacters()
+    override fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {
+        super.toolbarItemSelected(itemSelected, menu)
+        when (itemSelected.itemId) {
+            R.id.search -> {
+
+            }
+        }
+    }
+
+    private fun executeGetCharacters(fromPagination: Boolean = false) {
+        mViewModel.executeGetCharacters(fromPagination)
     }
 
     private fun onCharactersLoaded(success: Any?) {
         if (success != null) {
             hideProgressDialog()
             val results = (success as CharactersView).results
-            if (!mAdapter.collection.containsAll(results)) {
+            if (!mViewModel.getListCharacters().containsAll(results)) {
                 rvEndListener = true
-                mAdapter.collection.toMutableList().run {
-                    addAll(results)
-                    mAdapter.collection = this
-                }
+                mViewModel.addCharacters(results)
+                mAdapter.collection = mViewModel.getListCharacters()
             }
         }
     }
