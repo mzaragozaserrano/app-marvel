@@ -1,6 +1,20 @@
 <resources>
-    <string name="app_name">Marvel</string>
+
     <string name="show_info">Ver info</string>
-    <string name="server_error">Información no disponible.</string>
-    <string name="details_error">Información no disponible.</string>
+
+    // ERRORES
+    <string name="error_generic">Se ha producido un error</string>
+    <string name="error_no_connectivity">No hay conexión a Internet</string>
+    <string name="error_no_results">No se han encontrado resultados</string>
+    <string name="error_server">Se ha producido un error en el servidor</string>
+
+    //HINT
+    <string name="hint_query_search">Buscar…</string>
+
+    // OPTIONS
+    <string name="option_search">Buscar</string>
+
+    // TITUTLOS
+    <string name="title_app">Marvel</string>
+
 </resources>
