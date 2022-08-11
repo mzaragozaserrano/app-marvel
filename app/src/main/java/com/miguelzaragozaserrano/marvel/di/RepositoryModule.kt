@@ -4,6 +4,7 @@ import com.miguelzaragozaserrano.data.datasource.CharactersDataSource
 import com.miguelzaragozaserrano.data.datasource.CharactersDataSourceImpl
 import com.miguelzaragozaserrano.data.repositories.CharactersRepositoryImpl
 import com.miguelzaragozaserrano.data.repositories.CharactersRepository
+import com.miguelzaragozaserrano.domain.usecases.CharactersByNameUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,6 +18,6 @@ interface RepositoryModule {
     fun bindCharacterRepository(repository: CharactersRepositoryImpl): CharactersRepository
 
     @Binds
-    fun bindRemoteDataSource(dataSource: CharactersDataSourceImpl): CharactersDataSource
+    fun bindCharactersDataSource(dataSource: CharactersDataSourceImpl): CharactersDataSource
 
 }

@@ -1,12 +1,15 @@
 package com.miguelzaragozaserrano.marvel.utils.extensions
 
-import com.miguelzaragozaserrano.data.utils.*
 import com.miguelzaragozaserrano.data.utils.Error.*
 import com.miguelzaragozaserrano.data.utils.Error.Throwable
-import com.miguelzaragozaserrano.marvel.R
+import com.miguelzaragozaserrano.data.utils.Result
+import com.miguelzaragozaserrano.data.utils.Success
+import com.miguelzaragozaserrano.data.utils.onFailure
+import com.miguelzaragozaserrano.data.utils.onSuccess
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.models.UiState
 import com.miguelzaragozaserrano.marvel.utils.Status.*
+import com.miguelzaragozaserrano.marvel.utils.getMessage
 import kotlinx.coroutines.flow.*
 
 suspend fun <T : Any, L : StateFlow<T>> BaseFragment.collect(
@@ -28,10 +31,31 @@ suspend fun <T : Any, L : StateFlow<T>> BaseFragment.collect(
             ERROR -> {
                 hideProgressDialog()
                 when (state.error) {
-                    is Server -> onStateError(requireContext().getString(R.string.server_error))
-                    is Unknown -> onStateError((state.error as Unknown).message)
-                    is Connectivity -> onStateError((state.error as Connectivity).message)
+                    is Connectivity -> onStateError(
+                        getMessage(
+                            requireContext(),
+                            (state.error as Connectivity).code
+                        )
+                    )
+                    is NoResults -> onStateError(
+                        getMessage(
+                            requireContext(),
+                            (state.error as NoResults).code
+                        )
+                    )
+                    is Server -> onStateError(
+                        getMessage(
+                            requireContext(),
+                            (state.error as Server).code
+                        )
+                    )
                     is Throwable -> onStateError((state.error as Throwable).throwable?.message)
+                    is Unknown -> onStateError(
+                        getMessage(
+                            requireContext(),
+                            (state.error as Unknown).code
+                        )
+                    )
                 }
                 error?.invoke()
             }
@@ -45,11 +69,11 @@ suspend fun <T : Any, G : Any> Flow<Result<T>>.update(
 ) {
     onStart { _state.update { it.copy(status = LOADING) } }
         .onCompletion { _state.update { it.copy(status = LOADED) } }
-        .catch { throwable ->
+        .catch {
             _state.update {
                 UiState(
                     status = ERROR,
-                    error = Unknown(throwable.message)
+                    error = Unknown()
                 )
             }
         }
