@@ -15,10 +15,22 @@ class CharactersDataSourceImpl @Inject constructor(
     override suspend fun getCharacters(fromPagination: Boolean, offset: Int): Result<Characters> =
         runCatching {
             if (local.getCharacterCount() <= offset) {
-               getCharactersFromService(offset)
+                getCharactersFromService(offset)
             } else {
                 local.getCharacters(offset)
             }
+        }.map { state ->
+            return when (state) {
+                is Failure -> Either.Left(Failure(state.error))
+                is Success -> Either.Right(Success(state.data))
+            }
+        }.getOrElse {
+            Either.Left(error = Failure(Error.Throwable(it)))
+        }
+
+    override suspend fun getFavoriteCharacters(): Result<Characters> =
+        runCatching {
+            local.getFavoriteCharacters()
         }.map { state ->
             return when (state) {
                 is Failure -> Either.Left(Failure(state.error))

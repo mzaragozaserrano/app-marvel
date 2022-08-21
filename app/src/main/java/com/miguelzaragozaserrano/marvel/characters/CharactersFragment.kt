@@ -6,7 +6,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.miguelzaragozaserrano.domain.utils.extensions.then
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
 import com.miguelzaragozaserrano.marvel.characters.TYPE.ALL
@@ -38,6 +37,9 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         super.setup1Observers()
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             collect(mViewModel.charactersState, ::onCharactersLoaded)
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            collect(mViewModel.favoriteCharactersState, ::onFavoriteCharactersLoaded)
         }
     }
 
@@ -75,19 +77,13 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         super.toolbarItemSelected(itemSelected, menu)
         when (itemSelected.itemId) {
             R.id.fav_icon -> {
-                menu.findItem(R.id.fav_icon).icon = when (mAdapter.type) {
-                    ALL -> {
-                        AppCompatResources.getDrawable(requireContext(),
-                            R.drawable.ic_favorite_on)
-                    }
-                    FAVORITE -> {
-                        AppCompatResources.getDrawable(requireContext(),
-                            R.drawable.ic_favorite_off)
-                    }
-                }
-                (mAdapter.type == FAVORITE) then ALL ?: FAVORITE
+                onFavIconClicked(menu)
             }
         }
+    }
+
+    private fun executeGetFavorites() {
+        mViewModel.executeGetFavoriteCharacters()
     }
 
     private fun executeGetCharacters(fromPagination: Boolean = false) {
@@ -106,10 +102,35 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         }
     }
 
+    private fun onFavoriteCharactersLoaded(success: Any?) {
+        if (success != null) {
+            hideProgressDialog()
+            val results = (success as CharactersView).results
+            mViewModel.addFavoriteCharacters(results)
+            mAdapter.collection = mViewModel.getListFavoriteCharacters()
+        }
+    }
+
     private fun onCharacterDetails(character: CharacterView) {
         val directions =
             CharactersFragmentDirections.actionCharactersFragmentToCharacterFragment(character)
         findNavController().navigate(directions)
+    }
+
+    private fun onFavIconClicked(menu: Menu) {
+        menu.findItem(R.id.fav_icon).icon = when (mAdapter.type) {
+            ALL -> {
+                executeGetFavorites()
+                AppCompatResources.getDrawable(requireContext(),
+                    R.drawable.ic_favorite_on)
+            }
+            FAVORITE -> {
+                mAdapter.collection = mViewModel.getListCharacters()
+                AppCompatResources.getDrawable(requireContext(),
+                    R.drawable.ic_favorite_off)
+            }
+        }
+        if (mAdapter.type == FAVORITE) mAdapter.type = ALL else mAdapter.type = FAVORITE
     }
 
 }

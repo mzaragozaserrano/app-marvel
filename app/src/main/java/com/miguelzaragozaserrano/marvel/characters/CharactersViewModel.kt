@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.miguelzaragozaserrano.data.models.response.Characters
 import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
 import com.miguelzaragozaserrano.domain.usecases.GetCharacters
+import com.miguelzaragozaserrano.domain.usecases.GetFavoriteCharacters
 import com.miguelzaragozaserrano.marvel.base.BaseViewModel
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
@@ -23,20 +24,31 @@ import javax.inject.Inject
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
     private val getCharacters: @JvmSuppressWildcards GetCharacters,
+    private val getFavoriteCharacters: @JvmSuppressWildcards GetFavoriteCharacters,
 ) : BaseViewModel() {
 
     private var offset = 0
     private var getCharactersJob: Job? = null
     private val listCharacters: MutableList<CharacterView> = mutableListOf()
+    private val listFavoriteCharacters: MutableList<CharacterView> = mutableListOf()
 
     private var _charactersState = MutableStateFlow(UiState<Characters, CharactersView>())
     val charactersState get() = _charactersState.asStateFlow()
+
+    private var _favoriteCharactersState = MutableStateFlow(UiState<Characters, CharactersView>())
+    val favoriteCharactersState get() = _favoriteCharactersState.asStateFlow()
 
     fun addCharacters(list: MutableList<CharacterView>) {
         listCharacters.addAll(list)
     }
 
     fun getListCharacters() = listCharacters
+
+    fun addFavoriteCharacters(list: MutableList<CharacterView>) {
+        listFavoriteCharacters.addAll(list)
+    }
+
+    fun getListFavoriteCharacters() = listFavoriteCharacters
 
     fun executeGetCharacters(fromPagination: Boolean = false) {
         getCharactersJob.cancelIfActive()
@@ -47,6 +59,21 @@ class CharactersViewModel @Inject constructor(
                         state.data.results?.size?.let { newOffset ->
                             offset += newOffset
                         }
+                        it.copy(
+                            status = LOADED,
+                            success = state.data.toCharactersView()
+                        )
+                    }
+                }
+        }
+    }
+
+    fun executeGetFavoriteCharacters() {
+        getCharactersJob.cancelIfActive()
+        getCharactersJob = viewModelScope.launch {
+            getFavoriteCharacters()
+                .update(_favoriteCharactersState) { state ->
+                    _favoriteCharactersState.update {
                         it.copy(
                             status = LOADED,
                             success = state.data.toCharactersView()
