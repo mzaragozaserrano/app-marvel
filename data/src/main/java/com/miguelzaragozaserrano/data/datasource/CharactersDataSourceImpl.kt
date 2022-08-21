@@ -44,16 +44,4 @@ class CharactersDataSourceImpl @Inject constructor(
             Failure(Error.Connectivity())
         }
 
-    override suspend fun getCharactersByName(query: String): Result<Characters> =
-        runCatching {
-            local.getCharactersByName(query)
-        }.map { state ->
-            return when (state) {
-                is Failure -> Either.Left(Failure(state.error))
-                is Success -> Either.Right(Success(state.data))
-            }
-        }.getOrElse {
-            Either.Left(error = Failure(Error.Throwable(it)))
-        }
-
 }

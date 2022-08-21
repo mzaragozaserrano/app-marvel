@@ -17,7 +17,4 @@ interface CharactersDAO : BaseDao<CharacterEntity> {
     @Query("SELECT * FROM CharacterEntity ORDER BY name ASC LIMIT :limit OFFSET :offset")
     fun getSome(limit: Int = 10, offset: Int): List<CharacterEntity>
 
-    @Query("SELECT * FROM CharacterEntity WHERE name LIKE '%' || :query || '%'")
-    fun getSomeByName(query: String): List<CharacterEntity>?
-
 }

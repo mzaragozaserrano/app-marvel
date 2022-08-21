@@ -68,8 +68,8 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     override fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {
         super.toolbarItemSelected(itemSelected, menu)
         when (itemSelected.itemId) {
-            R.id.search -> {
-
+            R.id.favorite -> {
+                toastLong("Se ha tocado el fav button")
             }
         }
     }

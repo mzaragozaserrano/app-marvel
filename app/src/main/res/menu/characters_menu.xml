@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        android:title="@string/option_search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_favorite_off"
+        android:title="@string/option_favorite"
         app:showAsAction="collapseActionView|ifRoom" />
 </menu>

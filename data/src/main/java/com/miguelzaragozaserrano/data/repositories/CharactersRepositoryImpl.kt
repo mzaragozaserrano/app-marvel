@@ -10,7 +10,4 @@ class CharactersRepositoryImpl @Inject constructor(
 ) : CharactersRepository {
     override suspend fun getCharacters(fromPagination: Boolean, offset: Int): Result<Characters> =
         charactersDataSource.getCharacters(fromPagination, offset)
-
-    override suspend fun getCharactersByName(query: String): Result<Characters> =
-        charactersDataSource.getCharactersByName(query)
 }

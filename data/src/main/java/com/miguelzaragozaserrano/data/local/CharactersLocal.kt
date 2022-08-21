@@ -24,18 +24,6 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
     override suspend fun getCharacterCount(): Int =
         withContext(Dispatchers.IO) { charactersDAO.characterCount() }
 
-    override suspend fun getCharactersByName(query: String): State<Characters> =
-        withContext(Dispatchers.IO) {
-            val list = charactersDAO.getSomeByName(query)
-            val characters =
-                Characters(0, LIMIT, 0, 0, list?.map { it.toCharacter() }?.toMutableList())
-            if (characters.results?.isNotEmpty() == true) {
-                Success(characters)
-            } else {
-                Failure(Error.NoResults())
-            }
-        }
-
     override suspend fun getCharacters(offset: Int?): State<Characters> =
         withContext(Dispatchers.IO) {
             val list = if (offset == null) {

@@ -8,11 +8,8 @@
     <string name="error_no_results">No se han encontrado resultados</string>
     <string name="error_server">Se ha producido un error en el servidor</string>
 
-    //HINT
-    <string name="hint_query_search">Buscar…</string>
-
     // OPTIONS
-    <string name="option_search">Buscar</string>
+    <string name="option_favorite">Favorito</string>
 
     // TITUTLOS
     <string name="title_app">Marvel</string>
