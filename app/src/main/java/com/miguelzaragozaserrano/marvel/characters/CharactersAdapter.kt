@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.miguelzaragozaserrano.marvel.R
+import com.miguelzaragozaserrano.marvel.characters.TYPE.ALL
 import com.miguelzaragozaserrano.marvel.databinding.ItemCharacterBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.utils.extensions.inflate
@@ -12,6 +13,8 @@ import kotlin.properties.Delegates
 
 class CharactersAdapter(private val listener: OnShowDetails) :
     RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
+
+    var type: TYPE = ALL
 
     internal var collection: List<CharacterView> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
@@ -44,3 +47,5 @@ class CharactersAdapter(private val listener: OnShowDetails) :
 class OnShowDetails(val onShowDetails: (item: CharacterView) -> Unit) {
     fun onClick(item: CharacterView) = onShowDetails(item)
 }
+
+enum class TYPE { ALL, FAVORITE }

@@ -2,15 +2,21 @@ package com.miguelzaragozaserrano.marvel.characters
 
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.miguelzaragozaserrano.domain.utils.extensions.then
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
+import com.miguelzaragozaserrano.marvel.characters.TYPE.ALL
+import com.miguelzaragozaserrano.marvel.characters.TYPE.FAVORITE
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
-import com.miguelzaragozaserrano.marvel.utils.extensions.*
+import com.miguelzaragozaserrano.marvel.utils.extensions.collect
+import com.miguelzaragozaserrano.marvel.utils.extensions.endless
+import com.miguelzaragozaserrano.marvel.utils.extensions.hideProgressDialog
 import com.miguelzaragozaserrano.marvel.utils.viewBinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,8 +74,18 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     override fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {
         super.toolbarItemSelected(itemSelected, menu)
         when (itemSelected.itemId) {
-            R.id.favorite -> {
-                toastLong("Se ha tocado el fav button")
+            R.id.fav_icon -> {
+                menu.findItem(R.id.fav_icon).icon = when (mAdapter.type) {
+                    ALL -> {
+                        AppCompatResources.getDrawable(requireContext(),
+                            R.drawable.ic_favorite_on)
+                    }
+                    FAVORITE -> {
+                        AppCompatResources.getDrawable(requireContext(),
+                            R.drawable.ic_favorite_off)
+                    }
+                }
+                (mAdapter.type == FAVORITE) then ALL ?: FAVORITE
             }
         }
     }
