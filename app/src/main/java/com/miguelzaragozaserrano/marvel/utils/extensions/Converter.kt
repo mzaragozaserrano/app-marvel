@@ -4,6 +4,7 @@ import com.miguelzaragozaserrano.data.models.response.Character
 import com.miguelzaragozaserrano.data.models.response.Characters
 import com.miguelzaragozaserrano.data.utils.extensions.orEmpty
 import com.miguelzaragozaserrano.data.utils.extensions.orNotInfo
+import com.miguelzaragozaserrano.domain.utils.extensions.orEmpty
 import com.miguelzaragozaserrano.marvel.models.CharacterView
 import com.miguelzaragozaserrano.marvel.models.CharactersView
 
@@ -13,11 +14,12 @@ fun Character.toCharacterView(): CharacterView = CharacterView(
     description = description.orNotInfo(),
     modified = modified,
     resourceURI = resourceURI.orEmpty(),
-    favorite = null,
+    favorite = favorite.orEmpty(),
     image = thumbnail?.image().orEmpty()
 )
 
 fun Characters.toCharactersView(): CharactersView = CharactersView(
     offset.orEmpty(),
+    state,
     results?.map { it.toCharacterView() }?.toMutableList().orEmpty()
 )

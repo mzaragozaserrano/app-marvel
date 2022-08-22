@@ -6,6 +6,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.miguelzaragozaserrano.marvel.utils.extensions.setSupportActionBar
 import com.miguelzaragozaserrano.marvel.utils.extensions.snackBarLong
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,11 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +41,6 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSetup()
-        setup4InitFunctions()
         onBackPressedDispatcher(this)
     }
 
@@ -63,14 +68,16 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         }
     }
 
-    open fun onBackPressed() {}
+    open fun onBackPressed() {
+        findNavController().popBackStack()
+    }
     open fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {}
 
     fun setupToolbar(
         toolbar: Toolbar,
         titleId: Int,
         menuId: Int?,
-        navigationIdIcon: Int?
+        navigationIdIcon: Int? = null
     ) {
         setSupportActionBar(toolbar)
         with(toolbar) {
@@ -88,6 +95,8 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         }
     }
 
+    fun getMenu() = menu
+
     private fun onBackPressedDispatcher(lifecycleOwner: LifecycleOwner) {
         requireActivity().onBackPressedDispatcher
             .addCallback(lifecycleOwner, callback)
@@ -97,6 +106,7 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         setup1Observers()
         setup2Listeners()
         setup3Vars()
+        setup4InitFunctions()
     }
 
 }

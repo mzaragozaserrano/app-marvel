@@ -1,18 +1,18 @@
 package com.miguelzaragozaserrano.marvel.characters
 
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.miguelzaragozaserrano.data.models.response.TYPE.FAVORITE
 import com.miguelzaragozaserrano.marvel.R
 import com.miguelzaragozaserrano.marvel.base.BaseFragment
-import com.miguelzaragozaserrano.marvel.characters.TYPE.ALL
-import com.miguelzaragozaserrano.marvel.characters.TYPE.FAVORITE
 import com.miguelzaragozaserrano.marvel.databinding.FragmentCharactersBinding
 import com.miguelzaragozaserrano.marvel.models.CharacterView
-import com.miguelzaragozaserrano.marvel.models.CharactersView
 import com.miguelzaragozaserrano.marvel.utils.extensions.collect
 import com.miguelzaragozaserrano.marvel.utils.extensions.endless
 import com.miguelzaragozaserrano.marvel.utils.extensions.hideProgressDialog
@@ -33,13 +33,17 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         })
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener("requestKey") { _, bundle ->
+            mViewModel.updateListCharacters(bundle.getInt("character"))
+        }
+    }
+
     override fun setup1Observers() {
         super.setup1Observers()
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             collect(mViewModel.charactersState, ::onCharactersLoaded)
-        }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            collect(mViewModel.favoriteCharactersState, ::onFavoriteCharactersLoaded)
         }
     }
 
@@ -64,13 +68,20 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup4InitFunctions() {
         super.setup4InitFunctions()
-        setupToolbar(
-            toolbar = mBinding.toolbarComponent.toolbar,
-            titleId = R.string.title_app,
-            menuId = R.menu.characters_menu,
-            navigationIdIcon = null
-        )
-        executeGetCharacters()
+        if (mViewModel.charactersState.value.success?.state != FAVORITE) {
+            setupToolbar(
+                toolbar = mBinding.toolbarComponent.toolbar,
+                titleId = R.string.title_app,
+                menuId = R.menu.characters_menu)
+        }
+        if (mViewModel.getListCharacters().isEmpty()) {
+            executeGetCharacters()
+        }
+        if (mViewModel.charactersState.value.success?.state == FAVORITE) {
+            executeGetFavorites()
+            getMenu().findItem(R.id.fav_icon).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorite_on)
+        }
     }
 
     override fun toolbarItemSelected(itemSelected: MenuItem, menu: Menu) {
@@ -93,21 +104,10 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     private fun onCharactersLoaded(success: Any?) {
         if (success != null) {
             hideProgressDialog()
-            val results = (success as CharactersView).results
-            if (!mViewModel.getListCharacters().containsAll(results)) {
-                rvEndListener = true
-                mViewModel.addCharacters(results)
-                mAdapter.collection = mViewModel.getListCharacters()
+            rvEndListener = true
+            mViewModel.charactersState.value.success?.let { data ->
+                mAdapter.collection = data.results
             }
-        }
-    }
-
-    private fun onFavoriteCharactersLoaded(success: Any?) {
-        if (success != null) {
-            hideProgressDialog()
-            val results = (success as CharactersView).results
-            mViewModel.addFavoriteCharacters(results)
-            mAdapter.collection = mViewModel.getListFavoriteCharacters()
         }
     }
 
@@ -118,19 +118,18 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
     }
 
     private fun onFavIconClicked(menu: Menu) {
-        menu.findItem(R.id.fav_icon).icon = when (mAdapter.type) {
-            ALL -> {
+        menu.findItem(R.id.fav_icon).icon = when (mViewModel.charactersState.value.success?.state) {
+            FAVORITE -> {
+                mViewModel.changeToListCharacters()
+                AppCompatResources.getDrawable(requireContext(),
+                    R.drawable.ic_favorite_off)
+            }
+            else -> {
                 executeGetFavorites()
                 AppCompatResources.getDrawable(requireContext(),
                     R.drawable.ic_favorite_on)
             }
-            FAVORITE -> {
-                mAdapter.collection = mViewModel.getListCharacters()
-                AppCompatResources.getDrawable(requireContext(),
-                    R.drawable.ic_favorite_off)
-            }
         }
-        if (mAdapter.type == FAVORITE) mAdapter.type = ALL else mAdapter.type = FAVORITE
     }
 
 }

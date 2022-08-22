@@ -8,4 +8,5 @@ interface CharactersDB {
     suspend fun getCharacters(offset: Int?): State<Characters>
     suspend fun getFavoriteCharacters(): State<Characters>
     suspend fun saveCharacters(characters: Characters)
+    suspend fun updateCharacter(id: Int, status: Boolean): State<Boolean>
 }

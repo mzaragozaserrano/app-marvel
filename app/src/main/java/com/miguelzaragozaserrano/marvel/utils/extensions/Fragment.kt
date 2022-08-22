@@ -23,7 +23,7 @@ fun Fragment.showProgressDialog() {
 fun Fragment.snackBarLong(
     view: View,
     text: String,
-    colorBackground: Int = R.color.purple_700,
+    colorBackground: Int = R.color.primaryColorOn,
     colorText: Int = R.color.white
 ) {
     (activity as BaseActivity<*>).snackBarLong(view, text, colorBackground, colorText)

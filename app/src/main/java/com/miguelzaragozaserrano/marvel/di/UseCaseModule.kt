@@ -1,10 +1,7 @@
 package com.miguelzaragozaserrano.marvel.di
 
 import com.miguelzaragozaserrano.data.repositories.CharactersRepositoryImpl
-import com.miguelzaragozaserrano.domain.usecases.CharactersUseCaseImpl
-import com.miguelzaragozaserrano.domain.usecases.FavoriteCharactersUseCaseImpl
-import com.miguelzaragozaserrano.domain.usecases.GetCharacters
-import com.miguelzaragozaserrano.domain.usecases.GetFavoriteCharacters
+import com.miguelzaragozaserrano.domain.usecases.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,6 +18,9 @@ interface UseCaseModule {
     @Binds
     fun bindGetFavoriteCharacters(favoriteCharactersUseCaseImpl: FavoriteCharactersUseCaseImpl): GetFavoriteCharacters
 
+    @Binds
+    fun bindUpdateCharacter(updateCharacterUseCaseImpl: UpdateCharacterUseCaseImpl): UpdateCharacter
+
     companion object {
         @Provides
         fun providesCharactersUseCaseImpl(repositoryImpl: CharactersRepositoryImpl): CharactersUseCaseImpl {
@@ -30,6 +30,11 @@ interface UseCaseModule {
         @Provides
         fun providesFavoriteCharactersUseCaseImpl(repositoryImpl: CharactersRepositoryImpl): FavoriteCharactersUseCaseImpl {
             return FavoriteCharactersUseCaseImpl(repositoryImpl)
+        }
+
+        @Provides
+        fun providesUpdateCharacterUseCaseImpl(repositoryImpl: CharactersRepositoryImpl): UpdateCharacterUseCaseImpl {
+            return UpdateCharacterUseCaseImpl(repositoryImpl)
         }
     }
 }

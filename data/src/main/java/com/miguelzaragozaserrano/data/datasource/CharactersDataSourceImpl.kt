@@ -40,6 +40,18 @@ class CharactersDataSourceImpl @Inject constructor(
             Either.Left(error = Failure(Error.Throwable(it)))
         }
 
+    override suspend fun updateCharacter(id: Int, status: Boolean): Result<Boolean> =
+        runCatching {
+            local.updateCharacter(id, status)
+        }.map { state ->
+            return when (state) {
+                is Failure -> Either.Left(Failure(state.error))
+                is Success -> Either.Right(Success(state.data))
+            }
+        }.getOrElse {
+            Either.Left(error = Failure(Error.Throwable(it)))
+        }
+
     private suspend fun getCharactersFromService(offset: Int): State<Characters> =
         if (networkHandler.isConnected()) {
             service.getCharacters(offset = offset).run {

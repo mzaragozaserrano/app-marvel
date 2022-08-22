@@ -14,4 +14,7 @@
     // TITUTLOS
     <string name="title_app">Marvel</string>
 
+    // CONTENT
+    <string name="content_favorite">Favorito</string>
+
 </resources>

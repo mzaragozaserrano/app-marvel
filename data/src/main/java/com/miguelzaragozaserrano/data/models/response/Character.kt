@@ -9,6 +9,7 @@ data class Character(
     val modified: String?,
     val resourceURI: String?,
     val thumbnail: CharacterThumbnail?,
+    val favorite: Boolean?,
 ) {
 
     fun toCharacterEntity() = CharacterEntity(

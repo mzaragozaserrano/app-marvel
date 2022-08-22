@@ -2,6 +2,9 @@ package com.miguelzaragozaserrano.data.local
 
 import com.miguelzaragozaserrano.data.dao.CharactersDAO
 import com.miguelzaragozaserrano.data.models.response.Characters
+import com.miguelzaragozaserrano.data.models.response.TYPE
+import com.miguelzaragozaserrano.data.models.response.TYPE.ALL
+import com.miguelzaragozaserrano.data.models.response.TYPE.FAVORITE
 import com.miguelzaragozaserrano.data.utils.DataConstants.LIMIT
 import com.miguelzaragozaserrano.data.utils.State
 import com.miguelzaragozaserrano.data.utils.Success
@@ -22,7 +25,7 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
                 charactersDAO.getSome(LIMIT, offset)
             }
             val characters =
-                Characters(0, LIMIT, 0, 0, list.map { it.toCharacter() }.toMutableList())
+                Characters(0, ALL, LIMIT, 0, 0, list.map { it.toCharacter() }.toMutableList())
             Success(characters)
         }
 
@@ -30,7 +33,7 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
         withContext(Dispatchers.IO) {
             val list = charactersDAO.getFavorites()
             val characters =
-                Characters(0, LIMIT, 0, 0, list.map { it.toCharacter() }.toMutableList())
+                Characters(0, FAVORITE, LIMIT, 0, 0, list.map { it.toCharacter() }.toMutableList())
             Success(characters)
         }
 
@@ -41,5 +44,11 @@ class CharactersLocal @Inject constructor(private val charactersDAO: CharactersD
             }
         }
     }
+
+    override suspend fun updateCharacter(id: Int, status: Boolean): State<Boolean> =
+        withContext(Dispatchers.IO) {
+            charactersDAO.updateFavorite(id, status)
+            Success(true)
+        }
 
 }

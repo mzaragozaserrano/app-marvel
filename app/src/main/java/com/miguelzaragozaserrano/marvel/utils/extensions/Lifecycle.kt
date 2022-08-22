@@ -16,7 +16,7 @@ suspend fun <T : Any, L : StateFlow<T>> BaseFragment.collect(
     flow: L,
     loaded: (Any?) -> Unit,
     error: (() -> Unit)? = null,
-    loading: (() -> Unit)? = null
+    loading: (() -> Unit)? = null,
 ) {
     flow.collect {
         val state = (it as UiState<*, *>)

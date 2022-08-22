@@ -38,6 +38,6 @@ data class CharacterEntity(
             description,
             modified,
             resourceURI,
-            CharacterThumbnail(path.toString(), extension.toString()))
+            CharacterThumbnail(path.toString(), extension.toString()), favorite)
 
 }

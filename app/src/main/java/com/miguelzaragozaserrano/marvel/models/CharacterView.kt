@@ -13,7 +13,7 @@ data class CharacterView(
     val description: String,
     val modified: String?,
     val resourceURI: String,
-    val favorite: Boolean?,
+    var favorite: Boolean?,
     val image: String,
 ) : Parcelable {
     companion object {
@@ -30,5 +30,11 @@ data class CharacterView(
     }
 
     fun toCharacter() =
-        Character(id, name, description, modified, resourceURI, CharacterThumbnail.thumbail(image))
+        Character(id,
+            name,
+            description,
+            modified,
+            resourceURI,
+            CharacterThumbnail.thumbail(image),
+            favorite)
 }

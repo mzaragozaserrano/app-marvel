@@ -13,4 +13,7 @@ class CharactersRepositoryImpl @Inject constructor(
 
     override suspend fun getFavoriteCharacters(): Result<Characters> =
         charactersDataSource.getFavoriteCharacters()
+
+    override suspend fun updateCharacter(id: Int, status: Boolean): Result<Boolean> =
+        charactersDataSource.updateCharacter(id, status)
 }

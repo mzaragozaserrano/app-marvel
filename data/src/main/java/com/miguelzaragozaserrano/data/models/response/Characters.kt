@@ -2,6 +2,7 @@ package com.miguelzaragozaserrano.data.models.response
 
 data class Characters(
     val offset: Int?,
+    val state: TYPE?,
     val limit: Int?,
     val total: Int?,
     val count: Int?,
@@ -12,7 +13,10 @@ data class Characters(
         null,
         null,
         null,
+        null,
         results
     )
 
 }
+
+enum class TYPE { ALL, FAVORITE }

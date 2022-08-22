@@ -17,10 +17,10 @@ interface CharactersDAO : BaseDao<CharacterEntity> {
     @Query("SELECT * FROM CharacterEntity ORDER BY name ASC LIMIT :limit OFFSET :offset")
     fun getSome(limit: Int = 10, offset: Int): List<CharacterEntity>
 
-    @Query("SELECT * FROM CharacterEntity WHERE favorite = :favorite")
+    @Query("SELECT * FROM CharacterEntity WHERE favorite = :favorite ORDER BY name ASC")
     fun getFavorites(favorite: Boolean = true): List<CharacterEntity>
 
     @Query("UPDATE CharacterEntity SET favorite = :favorite WHERE id = :id")
-    suspend fun updateFavorite(id: String, favorite: Boolean)
+    suspend fun updateFavorite(id: Int, favorite: Boolean)
 
 }
