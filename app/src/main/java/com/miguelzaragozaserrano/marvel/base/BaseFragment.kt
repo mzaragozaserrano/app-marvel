@@ -17,18 +17,14 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
     private val layoutID = layout
 
     private var menuId: Int = 0
-    private var toolbar: Toolbar? = null
     private lateinit var menu: Menu
+    private var toolbar: Toolbar? = null
+    private var functionOnCreateOptionsMenu: (() -> Unit)? = null
 
     var callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             onBackPressed()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -50,6 +46,7 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
             inflater.inflate(menuId, menu)
         }
         this.menu = menu
+        functionOnCreateOptionsMenu?.invoke()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,7 +74,8 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         toolbar: Toolbar,
         titleId: Int,
         menuId: Int?,
-        navigationIdIcon: Int? = null
+        navigationIdIcon: Int? = null,
+        functionOnCreateOptionsMenu: ((menu: Menu) -> Unit)? = null
     ) {
         setSupportActionBar(toolbar)
         with(toolbar) {
@@ -93,9 +91,10 @@ abstract class BaseFragment(layout: Int) : Fragment(), CoroutineScope by MainSco
         if (menuId != null) {
             this.menuId = menuId
         }
+        if(functionOnCreateOptionsMenu != null){
+            this.functionOnCreateOptionsMenu = { functionOnCreateOptionsMenu(menu) }
+        }
     }
-
-    fun getMenu() = menu
 
     private fun onBackPressedDispatcher(lifecycleOwner: LifecycleOwner) {
         requireActivity().onBackPressedDispatcher

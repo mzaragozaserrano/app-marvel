@@ -68,19 +68,14 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
 
     override fun setup4InitFunctions() {
         super.setup4InitFunctions()
-        if (mViewModel.charactersState.value.success?.state != FAVORITE) {
-            setupToolbar(
-                toolbar = mBinding.toolbarComponent.toolbar,
-                titleId = R.string.title_app,
-                menuId = R.menu.characters_menu)
-        }
+        setupToolbar(
+            toolbar = mBinding.toolbarComponent.toolbar,
+            titleId = R.string.title_app,
+            menuId = R.menu.characters_menu,
+            functionOnCreateOptionsMenu = { menu -> bindToolbar(menu) }
+        )
         if (mViewModel.getListCharacters().isEmpty()) {
             executeGetCharacters()
-        }
-        if (mViewModel.charactersState.value.success?.state == FAVORITE) {
-            executeGetFavorites()
-            getMenu().findItem(R.id.fav_icon).icon =
-                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorite_on)
         }
     }
 
@@ -121,14 +116,26 @@ class CharactersFragment : BaseFragment(R.layout.fragment_characters) {
         menu.findItem(R.id.fav_icon).icon = when (mViewModel.charactersState.value.success?.state) {
             FAVORITE -> {
                 mViewModel.changeToListCharacters()
-                AppCompatResources.getDrawable(requireContext(),
-                    R.drawable.ic_favorite_off)
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_off
+                )
             }
             else -> {
                 executeGetFavorites()
-                AppCompatResources.getDrawable(requireContext(),
-                    R.drawable.ic_favorite_on)
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_on
+                )
             }
+        }
+    }
+
+    private fun bindToolbar(menu: Menu) {
+        if (mViewModel.charactersState.value.success?.state == FAVORITE) {
+            executeGetFavorites()
+            menu.findItem(R.id.fav_icon).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorite_on)
         }
     }
 
